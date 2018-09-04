@@ -201,8 +201,8 @@ usort( $chores, 'sort_chores' );
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="viewport" content="user-scalable=no,width=device-width" />
-		<link rel="icon" type="image/png" href="img/icon-180.png" />
-		<link rel="apple-touch-icon" sizes="180x180" href="img/icon-180.png" />
+		<link rel="icon" type="image/png" href="img/icon-180.png?mtime=<?php echo filemtime( "img/icon-180.png"); ?>" />
+		<link rel="apple-touch-icon" sizes="180x180" href="img/icon-180.png?mtime=<?php echo filemtime( "img/icon-180.png"); ?>" />
 		<link rel="stylesheet" type="text/css" href="css/reset.css?mtime=<?php echo filemtime( "css/reset.css" ); ?>" />
 		<link rel="stylesheet" type="text/css" href="css/chores-core.css?mtime=<?php echo filemtime( "css/chores-core.css" ); ?>" />
 	</head>
