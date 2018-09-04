@@ -208,6 +208,12 @@ usort( $chores, 'sort_chores' );
 		<?php if ( ! empty( $chores ) ) {
 			$last_due = '';
 			
+			if ( $chores[0]->due() != 'overdue' && $chores[0]->due() != 'today' ) {
+				echo '<div class="due due-today">';
+				echo '<h2>All Done for Today!</h2>';
+				echo '</div>';
+			}
+			
 			foreach ( $chores as $chore ) {
 				if ( $chore->due() != $last_due ) {
 					if ( $last_due ) {
