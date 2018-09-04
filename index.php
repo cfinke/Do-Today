@@ -272,5 +272,7 @@ usort( $chores, 'sort_chores' );
 			<?php } ?>
 			</div>
 		<?php } ?>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="js/chores-core.js?mtime=<?php echo filemtime( "js/chores-core.js" ); ?>"></script>
 	</body>
 </html>
