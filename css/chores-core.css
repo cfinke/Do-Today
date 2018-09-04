@@ -1,0 +1,116 @@
+/*
+
+Color Scheme:
+132935
+2B6F71
+599DBD
+8EB9DE
+E9F0ED
+
+*/
+
+body {
+	background: #E9F0ED;
+	color: #111;
+	box-sizing: border-box;
+	font-family: Futura, Helvetica, sans-serif;
+}
+
+input[type='submit'] {
+	-webkit-appearance: none;
+	-webkit-border-radius: 0;
+	width: .7in;
+	height: .7in;
+	text-align: center;
+	border: 0;
+	border-radius: 3px;
+	font-size: 100%;
+	cursor: pointer;
+	background-position: center center;
+	background-repeat: no-repeat;
+	text-indent: -10000px;
+}
+
+	input[type='submit']:active {
+		margin-top: 2px;
+		margin-bottom: 0;
+		opacity: 0.75;
+	}
+
+form.add input[type='submit'] {
+	float: right;
+	background-color: #2B6F71;
+	background-image: url(../img/icon-add-600.png);
+	background-size: 50% 50%;
+}
+
+.chore {
+	background-color: #E9F0ED;
+	width: 100%;
+	padding: 2ex;
+	min-height: 1in;
+	box-sizing: border-box;
+	line-height: 1.35;
+	
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#d6dbd9+0,e9f0ed+40 */
+	background: rgb(214,219,217); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(214,219,217,1) 0%, rgba(233,240,237,1) 40%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, rgba(214,219,217,1) 0%,rgba(233,240,237,1) 40%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, rgba(214,219,217,1) 0%,rgba(233,240,237,1) 40%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d6dbd9', endColorstr='#e9f0ed',GradientType=0 ); /* IE6-9 */
+}
+
+	.chore .name {
+		font-weight: bold;
+	}
+
+	.chore form.done {
+		float: right;
+	}
+	
+	.chore form.done input[type='submit'] {
+		background-color: #132935;
+		background-image: url(../img/icon-check-500.png);
+		background-size: 60% 60%;
+		
+	}
+	
+	.chore form.delete {
+		float: left;
+		margin-right: 2ex;
+	}
+
+		.chore form.delete input[type='submit'] {
+			background-color: #f00;
+			background-image: url(../img/icon-delete-600.png);
+			background-size: 50% 50%;
+		}
+
+.due {
+}
+
+	.due h2 {
+		font-size: 110%;
+		padding: .75ex;
+		color: #fff;
+	}
+	
+	.due.due-nothing h2 {
+		background-color: #2B6F71;
+	}
+
+	.due.due-overdue h2 {
+		background-color: #DD7B5D;
+	}
+
+	.due.due-today h2 {
+		background-color: #8EB9DE;
+	}
+
+	.due.due-tomorrow h2 {
+		background-color: #599DBD;
+	}
+
+	.due.due-future h2 {
+		background-color: #2B6F71;
+	}
