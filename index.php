@@ -39,6 +39,32 @@ class Chore {
 		}
 	}
 	
+	public function time_remaining_fuzzy() {
+		if ( $this->time_remaining < 60 * 60 ) {
+			return "Now";
+		}
+		else if ( $this->time_remaining < 23 * 60 * 60 ) {
+			$hours_left = round( $this->time_remaining / 60 / 60 );
+			
+			return "In " . $hours_left . " hour" . ( $hours_left > 1 ? "s" : "" );
+		}
+		else if ( $this->time_remaining < 6 * 24 * 60 * 60 ) {
+			$days_left = round( $this->time_remaining / 24 / 60 / 60 );
+			
+			return "In " . $days_left . " day" . ( $days_left > 1 ? "s" : "" );
+		}
+		else if ( $this->time_remaining < 90 * 24 * 60 * 60 ) {
+			$weeks_left = round( $this->time_remaining / 7 / 24 / 60 / 60 );
+			
+			return "In " . $weeks_left . " week" . ( $weeks_left > 1 ? "s" : "" );
+		}
+		else {
+			$months_left = round( $this->time_remaining / 30 / 24 / 60 / 60 );
+			
+			return "In " . $months_left . " month" . ( $months_left > 1 ? "s" : "" );
+		}
+	}
+	
 	public function urgency() {
 		$time_between = ( $this->frequency_interval_in_seconds( $this->frequency_interval ) * $this->frequency_number );
 		$time_until = $this->time_remaining;
@@ -240,7 +266,7 @@ usort( $chores, 'sort_chores' );
 						<input type="submit" name="complete_chore" value="✓" />
 					</form>
 					<p class="name"><?php echo htmlspecialchars( $chore->name ); ?></p>
-					<p class="frequency"><em>Every <?php echo ( $chore->frequency_number > 1 ? htmlspecialchars( $chore->frequency_number ) : '' ); ?> <?php echo htmlspecialchars( $chore->frequency_interval ) . ( $chore->frequency_number > 1 ? 's' : '' ); ?></em></p>
+					<p class="time_remaining"><em><?php echo htmlspecialchars( $chore->time_remaining_fuzzy() ); ?></em></p>
 					<p class="last_completed">Done <?php echo htmlspecialchars( $chore->last_completed_fuzzy() ); ?></p>
 				</div>
 			<?php } ?>
