@@ -130,9 +130,13 @@ function sort_chores( $a, $b ) {
 	return 0;
 }
 
+function get_json_filename() {
+	return basename( $_SERVER['PHP_SELF'], ".php" ) . ".json";
+}
+
 function get_chores_from_json() {
-	if ( file_exists( "chores.json" ) ) {
-		$chores_json = file_get_contents( "chores.json" );
+	if ( file_exists( get_json_filename() ) ) {
+		$chores_json = file_get_contents( get_json_filename() );
 
 		if ( $chores_json ) {
 			$chores = json_decode( $chores_json, true );
@@ -145,7 +149,7 @@ function get_chores_from_json() {
 }
 
 function save_chores_json( $chores_json ) {
-	return file_put_contents( "chores.json", json_encode( $chores_json ) );
+	return file_put_contents( get_json_filename(), json_encode( $chores_json ) );
 }
 
 if ( isset( $_POST['add_chore'] ) ) {
