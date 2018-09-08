@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set( "America/Los_Angeles" );
+
 class Chore {
 	var $name;
 	var $last_completed;
