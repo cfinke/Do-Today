@@ -15,7 +15,11 @@ class Chore {
 		$this->frequency_interval = $chore_data['frequency_interval'];
 		$this->frequency_number = $chore_data['frequency_number'];
 		
-		$this->time_remaining = $this->last_completed + ( $this->frequency_interval_in_seconds( $this->frequency_interval ) * $this->frequency_number ) - time();
+		$this->time_remaining = $this->last_completed + $this->frequency_in_seconds() - time();
+	}
+	
+	public function frequency_in_seconds() {
+		return $this->frequency_interval_in_seconds( $this->frequency_interval ) * $this->frequency_number;
 	}
 	
 	public function last_completed_fuzzy() {
