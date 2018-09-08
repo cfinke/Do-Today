@@ -67,17 +67,6 @@ class Chore {
 		}
 	}
 	
-	public function urgency() {
-		$time_between = ( $this->frequency_interval_in_seconds( $this->frequency_interval ) * $this->frequency_number );
-		$time_until = $this->time_remaining;
-		
-		if ( $time_until < 0 ) {
-			return 0;
-		}
-		
-		return max( 1, round( ( $time_until / $time_between ) * 5 ) );
-	}
-	
 	private function frequency_interval_in_seconds( $interval ) {
 		switch ( $interval ) {
 			case 'year':
@@ -260,7 +249,7 @@ usort( $chores, 'sort_chores' );
 				}
 
 				?>
-				<div class="chore urgency-<?php echo $chore->urgency(); ?>">
+				<div class="chore">
 					<?php if ( isset( $_GET['admin'] ) ) { ?>
 						<form method="post" action="" class="delete">
 							<input type="hidden" name="chore" value="<?php echo htmlspecialchars( $chore->name ); ?>" />
