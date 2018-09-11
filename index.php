@@ -35,6 +35,10 @@ class Chore {
 			return max( round( $time_since / 60 / 60 ), 2 )  . " hours ago";
 		}
 		else if ( $time_since < 30 * 24 * 60 * 60 ) {
+			if ( date( "Y-m-d", $this->last_completed ) === date( "Y-m-d", strtotime( "yesterday" ) ) ) {
+				return "yesterday";
+			}
+			
 			return max( round( $time_since / 60 / 60 / 24 ), 2 ) . " days ago";
 		}
 		else if ( $time_since < 100 * 24 * 60 * 60 ) {
