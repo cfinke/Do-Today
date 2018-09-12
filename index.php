@@ -50,6 +50,16 @@ class Chore {
 	}
 	
 	public function time_remaining_fuzzy() {
+		if ( $this->frequency_in_seconds() >= 24 * 60 * 60 ) {
+			if ( date( "Y-m-d", time() + $this->time_remaining ) === date( "Y-m-d" ) ) {
+				return "Today";
+			}
+			
+			if ( date( "Y-m-d", time() + $this->time_remaining ) === date( "Y-m-d", strtotime( "tomorrow" ) ) ) {
+				return "Tomorrow";
+			}
+		}
+			
 		if ( $this->time_remaining < 60 * 60 ) {
 			return "Now";
 		}
