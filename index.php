@@ -153,30 +153,43 @@ function sort_chores( $a, $b ) {
 	return 0;
 }
 
-function get_json_filename() {
-	return basename( $_SERVER['PHP_SELF'], ".php" ) . ".json";
-}
-
-function get_chores_from_json() {
-	if ( file_exists( get_json_filename() ) ) {
-		$chores_json = file_get_contents( get_json_filename() );
+function get_chores_from_json( $category = null ) {
+	if ( file_exists( "chores.json" ) ) {
+		$chores_json = file_get_contents( "chores.json" );
 
 		if ( $chores_json ) {
 			$chores = json_decode( $chores_json, true );
 
-			return $chores;
+			if ( ! $category ) {
+				return $chores;
+			}
+
+			if ( isset( $chores[ $category ] ) ) {
+				return $chores[ $category ];
+			}
 		}
 	}
 	
 	return array();
 }
 
-function save_chores_json( $chores_json ) {
-	return file_put_contents( get_json_filename(), json_encode( $chores_json ) );
+function save_chores_json( $chores_json, $category ) {
+	$all_chores_json = get_chores_from_json();
+	$all_chores_json[ $category ] = $chores_json;
+	
+	return file_put_contents( "chores.json", json_encode( $all_chores_json ) );
+}
+
+function get_chore_category() {
+	if ( isset( $_GET['category'] ) ) {
+		return $_GET['category'];
+	}
+	
+	return 'default';
 }
 
 if ( isset( $_POST['add_chore'] ) ) {
-	$chores_json = get_chores_from_json();
+	$chores_json = get_chores_from_json( get_chore_category() );
 	
 	$chores_json[ $_POST['name'] ] = array(
 		'frequency_number' => $_POST['frequency_number'],
@@ -184,33 +197,33 @@ if ( isset( $_POST['add_chore'] ) ) {
 		'last_completed' => time(),
 	);
 	
-	save_chores_json( $chores_json );
+	save_chores_json( $chores_json, get_chore_category() );
 	
 	header( "Location: ?" . $_SERVER['QUERY_STRING'] );
 	exit;
 }
 else if ( isset( $_POST['complete_chore'] ) ) {
-	$chores_json = get_chores_from_json();
+	$chores_json = get_chores_from_json( get_chore_category() );
 	
 	$chores_json[ $_POST['chore'] ]['last_completed'] = time();
 	
-	save_chores_json( $chores_json );
+	save_chores_json( $chores_json, get_chore_category() );
 	
 	header( "Location: ?" . $_SERVER['QUERY_STRING'] );
 	exit;
 }
 else if ( isset( $_POST['delete_chore'] ) ) {
-	$chores_json = get_chores_from_json();
+	$chores_json = get_chores_from_json( get_chore_category() );
 	
 	unset( $chores_json[ $_POST['chore'] ] );
 	
-	save_chores_json( $chores_json );
+	save_chores_json( $chores_json, get_chore_category() );
 	
 	header( "Location: ?" . $_SERVER['QUERY_STRING'] );
 	exit;
 }
 
-$chores = get_chores_from_json();
+$chores = get_chores_from_json( get_chore_category() );
 
 foreach ( $chores as $chore_name => $chore ) {
 	$chore['name'] = $chore_name;
