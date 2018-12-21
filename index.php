@@ -128,7 +128,7 @@ class Chore {
 		}
 		
 		if ( $this->time_remaining < 0 ) {
-			return 'overdue';
+			return 'today';
 		}
 		else if ( $this->time_remaining < $seconds_left_today ) {
 			return 'today';
@@ -139,6 +139,14 @@ class Chore {
 		else {
 			return 'future';
 		}
+	}
+	
+	public function is_overdue() {
+		if ( $this->time_remaining < 0 ) {
+			return true;
+		}
+		
+		return false;
 	}
 }
 
@@ -247,30 +255,6 @@ usort( $chores, 'sort_chores' );
 		<link rel="stylesheet" type="text/css" href="css/chores-core.css?mtime=<?php echo filemtime( "css/chores-core.css" ); ?>" />
 	</head>
 	<body>
-		<?php if ( isset( $_GET['admin'] ) ) { ?>
-			<div class="due due-nothing">
-				<h2>Add Chore</h2>
-				
-				<div class="chore add-chore">
-					<form method="post" action="" class="add">
-						<input type="submit" name="add_chore" value="Add Chore" />
-						<p>
-							Remind me to <input type="text" name="name" /> every <input type="number" name="frequency_number" size="3" />
-							<label>
-								<select name="frequency_interval">
-									<option value="year">Years</option>
-									<option value="month">Months</option>
-									<option value="week">Weeks</option>
-									<option value="day" selected="selected">Days</option>
-									<option value="hour">Hours</option>
-									<option value="minute">Minutes</option>
-								</select>
-							</label>
-						</p>
-					</form>
-				</div>
-			</div>
-		<?php } ?>
 		<?php if ( ! empty( $chores ) ) {
 			$last_due = '';
 			
@@ -280,7 +264,7 @@ usort( $chores, 'sort_chores' );
 				echo '</div>';
 			}
 			
-			foreach ( $chores as $chore ) {
+			foreach ( $chores as $chore_id => $chore ) {
 				if ( $chore->due() != $last_due ) {
 					if ( $last_due ) {
 						echo '</div>';
@@ -294,25 +278,44 @@ usort( $chores, 'sort_chores' );
 				}
 
 				?>
-				<div class="chore">
-					<?php if ( isset( $_GET['admin'] ) ) { ?>
-						<form method="post" action="" class="delete">
-							<input type="hidden" name="chore" value="<?php echo htmlspecialchars( $chore->name ); ?>" />
-							<input type="submit" name="delete_chore" value="X" />
-						</form>
-					<?php } ?>
+				<div class="chore deletable" id="chore-<?php echo $chore_id; ?>">
+					<form method="post" action="" class="delete">
+						<input type="hidden" name="chore" value="<?php echo htmlspecialchars( $chore->name ); ?>" />
+						<input type="submit" name="delete_chore" value="X" />
+					</form>
 					<form method="post" action="" class="done">
 						<input type="hidden" name="chore" value="<?php echo htmlspecialchars( $chore->name ); ?>" />
 						<input type="submit" name="complete_chore" value="✓" />
 					</form>
 					<p class="name"><?php echo htmlspecialchars( $chore->name ); ?></p>
-					<p class="time_remaining"><em><?php echo htmlspecialchars( $chore->time_remaining_fuzzy() ); ?></em></p>
+					<p class="time_remaining"><?php if ( $chore->is_overdue() ) { ?><span class="overdue">Overdue</span><?php } else { ?><em><?php echo htmlspecialchars( $chore->time_remaining_fuzzy() ); ?><?php } ?></em></p>
 					<p class="last_completed">Done <?php echo htmlspecialchars( $chore->last_completed_fuzzy() ); ?></p>
 				</div>
 			<?php } ?>
 			</div>
 		<?php } ?>
-		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<div class="due due-nothing">
+			<h2>Add Chore</h2>
+			
+			<div class="chore add-chore">
+				<form method="post" action="" class="add">
+					<input type="submit" name="add_chore" value="Add Chore" />
+					<p>
+						Remind me to <input type="text" name="name" /> every <input type="number" name="frequency_number" size="3" />
+						<label>
+							<select name="frequency_interval">
+								<option value="year">Years</option>
+								<option value="month">Months</option>
+								<option value="week">Weeks</option>
+								<option value="day" selected="selected">Days</option>
+							</select>
+						</label>
+					</p>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile.custom.min.js?mtime=<?php echo filemtime( "js/jquery.mobile.custom.min.js" ); ?>"></script>
 		<script type="text/javascript" src="js/chores-core.js?mtime=<?php echo filemtime( "js/chores-core.js" ); ?>"></script>
 	</body>
 </html>

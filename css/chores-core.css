@@ -76,8 +76,9 @@ form.add input[type='submit'] {
 	}
 	
 	.chore form.delete {
-		float: left;
-		margin-right: 2ex;
+		float: right;
+		margin-left: 2ex;
+		display: none;
 	}
 
 		.chore form.delete input[type='submit'] {
@@ -99,10 +100,6 @@ form.add input[type='submit'] {
 		background-color: #2B6F71;
 	}
 
-	.due.due-overdue h2 {
-		background-color: #DD7B5D;
-	}
-
 	.due.due-today h2 {
 		background-color: #8EB9DE;
 	}
@@ -113,4 +110,15 @@ form.add input[type='submit'] {
 
 	.due.due-future h2 {
 		background-color: #2B6F71;
+	}
+	
+	.due .overdue {
+		display: inline-block;
+		text-transform: uppercase;
+		color: #fff;
+		font-size: 70%;
+		background-color: #DD7B5D;
+		padding: .3ex .6ex;
+		font-weight: normal;
+		letter-spacing: .1em;
 	}
