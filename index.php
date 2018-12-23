@@ -111,26 +111,10 @@ class Chore {
 	}
 	
 	public function due() {
-		$seconds_left_today = strtotime( date( "Y-m-d 00:00:00", strtotime( "+1 day" ) ) ) - time();
-		$seconds_passed_today = ( 24 * 60 * 60 ) - $seconds_left_today;
-		
-		$time_remaining = $this->time_remaining;
-
-		// For the purpose of calculating a due date, treat all chores that are done less frequently than hourly as if
-		// they're due at 11:59:59 so that if a daily chore was done yesterday at 9am, it doesn't show
-		// up as overdue at 10am today.
-		if ( ! in_array( $this->frequency_interval, array( 'hour', 'minute' ) ) ) {
-			if ( $time_remaining < $seconds_left_today ) {
-				if ( ( $time_remaining * -1 ) < $seconds_passed_today ) {
-					return 'today';
-				}
-			}
-		}
-		
-		if ( $this->time_remaining < 0 ) {
+		if ( $this->is_due_today() ) {
 			return 'today';
 		}
-		else if ( $this->time_remaining < $seconds_left_today ) {
+		else if ( $this->is_overdue() ) {
 			return 'today';
 		}
 		else if ( $this->time_remaining < $seconds_left_today + ( 24 * 60 * 60 ) ) {
@@ -141,11 +125,37 @@ class Chore {
 		}
 	}
 	
+	public function is_due_today() {
+		$seconds_left_today = strtotime( date( "Y-m-d 00:00:00", strtotime( "+1 day" ) ) ) - time();
+		$seconds_passed_today = ( 24 * 60 * 60 ) - $seconds_left_today;
+
+		if ( $this->time_remaining < 0 ) {
+			// For the purpose of calculating a due date, treat all chores as if
+			// they're due at 11:59:59 so that if a daily chore was done yesterday at 9am, it doesn't show
+			// up as overdue at 10am today.
+			if ( ( $this->time_remaining * -1 ) < $seconds_passed_today ) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if ( $this->time_remaining < $seconds_left_today ) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public function is_overdue() {
+		if ( $this->is_due_today() ) {
+			return false;
+		}
+
 		if ( $this->time_remaining < 0 ) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }
