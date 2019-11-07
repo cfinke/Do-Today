@@ -137,6 +137,20 @@ class Chore {
 				return true;
 			}
 
+			// For a chore that happens weekly or less frequently, allow a couple of days where the chore is due but not overdue.
+			if ( $this->frequency_in_seconds() >= 7 * 24 * 60 * 60 ) {
+				// If a chore happens weekly, give an extra day. If it happens yearly, give two weeks.
+				// This works out to be that for every X days over a week that this chore happens, it gets an extra day of time to be completed.
+
+				$frequency_in_days = $this->frequency_in_seconds() / (24 * 60 * 60 );
+				$frequency_in_days -= 7;
+				$extra_days = 1 + ( $frequency_in_days / 358 * 13 );
+
+				if ( $this->time_remaining + ( $extra_days * 24 * 60 * 60 ) > 0 ) {
+					return true;
+				}
+			}
+
 			return false;
 		}
 
