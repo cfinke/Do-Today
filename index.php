@@ -111,6 +111,8 @@ class Chore {
 	}
 	
 	public function due() {
+		$seconds_left_today = strtotime( date( "Y-m-d 00:00:00", strtotime( "+1 day" ) ) ) - time();
+
 		if ( $this->is_due_today() ) {
 			return 'today';
 		}
