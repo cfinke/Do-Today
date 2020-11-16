@@ -23,6 +23,10 @@ class Chore {
 	}
 	
 	public function last_completed_fuzzy() {
+		if ( ! $this->last_completed ) {
+			return "Never";
+		}
+
 		$time_since = time() - $this->last_completed;
 		
 		if ( $time_since < 60 ) {
@@ -228,7 +232,7 @@ if ( isset( $_POST['add_chore'] ) ) {
 	$chores_json[ $_POST['name'] ] = array(
 		'frequency_number' => $_POST['frequency_number'],
 		'frequency_interval' => $_POST['frequency_interval'],
-		'last_completed' => time(),
+		'last_completed' => 0,
 	);
 	
 	save_chores_json( $chores_json, get_chore_category() );
