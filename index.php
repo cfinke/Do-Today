@@ -16,6 +16,19 @@ class Chore {
 		$this->frequency_number = $chore_data['frequency_number'];
 		
 		$this->time_remaining = $this->last_completed + $this->frequency_in_seconds() - time();
+
+		if ( 'weekday' == $this->frequency_interval ) {
+			$due_day = date( "w", time() + $this->time_remaining );
+
+			// If this chore would next be due on a weekend day, push it back to Monday
+			if ( $due_day === "0" || $due_day === "6" ) {
+				$this->time_remaining +=  24 * 60 * 60;
+			}
+
+			if ( $due_day === "6" ) {
+				$this->time_remaining +=  24 * 60 * 60;
+			}
+		}
 	}
 	
 	public function frequency_in_seconds() {
@@ -101,6 +114,7 @@ class Chore {
 				return 7 * 24 * 60 * 60;
 			break;
 			case 'day':
+			case 'weekday':
 				return 24 * 60 * 60;
 			break;
 			case 'hour':
@@ -338,6 +352,7 @@ usort( $chores, 'sort_chores' );
 								<option value="month">Months</option>
 								<option value="week">Weeks</option>
 								<option value="day" selected="selected">Days</option>
+								<option value="weekday">Weekdays</option>
 							</select>
 						</label>
 					</p>
